@@ -1,6 +1,6 @@
 # UTF-8 Python 3.13.5
 # Author: Intan K. Wardhani
-# Last modified: 25-11-2025
+# Last modified: 27-11-2025
 
 import os
 import joblib
@@ -42,6 +42,7 @@ class ModelTuner:
         output_dir : str
             Directory where tuned models should be saved.
         """
+        
         self.trainer = trainer
         self.model_name = model_name
         self.preprocessor = trainer._get_preprocessor(model_name)
@@ -127,6 +128,12 @@ class ModelTuner:
         model_path = os.path.join(self.output_dir, f"{model_name}_best.pkl")
         joblib.dump(grid.best_estimator_, model_path)
         logger.info(f"Saved best {model_name} to: {model_path}")
+        
+        # -------- SAVE BEST FULL PIPELINE --------
+        model_path = os.path.join(self.output_dir, f"{model_name}_best.pkl")
+        joblib.dump(grid.best_estimator_, model_path)
+        logger.info(f"Saved best {model_name} to: {model_path}")
+        # ------------------------------------------
 
         return grid
 
