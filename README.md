@@ -60,8 +60,9 @@ immo-ML-project/
 │   └── README.md
 │
 ├── models/
-│   ├── trained_model.pkl
-│   └── preprocessing_pipeline.pkl
+│   ├── RandomForest_pipeline.pkl
+│   ├── Ridge_pipeline.pkl
+│   └── XGBoost_pipeline.pkl
 │
 ├── src/
 │   ├── __init__.py
@@ -74,12 +75,12 @@ immo-ML-project/
 │   │
 │   ├── features/
 │   │   ├── __init__.py
-│   │   ├── build_features.py   # feature engineering (CURRENTLY UNUSED)
+│   │   └── build_features.py   # feature engineering (CURRENTLY UNUSED)
 │   │
 │   ├── models/
 │   │   ├── __init__.py
 │   │   ├── evaluator.py        # evaluation functions
-│   │   ├── trainer.py          # training class (ModelTrainer)
+│   │   ├── trainer.py          # training class
 │   │   ├── tuner.py            # hyperparameter tuning (CURRENTLY UNUSED)
 │   │   └── predict.py          # predict new data with saved model (CURRENTLY UNUSED)
 │   │

@@ -1,2 +1,18 @@
+numpy
+pandas
+scikit-learn
+xgboost
+joblib
+
+# Optional but recommended for notebooks / EDA
+matplotlib
+seaborn
+jupyter
+
+# Testing
 pytest
+pytest-cov
+
+# For pyproject / tools used in your repo
+tomli
 
