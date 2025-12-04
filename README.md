@@ -49,7 +49,7 @@ This notebook contains the step-by-step process of training the 3 models: Ridge,
 
 # Project Structure
 ```markdown
-immo-ML-project/
+immo-ml-training/
 │
 ├── data/
 │   ├── raw/

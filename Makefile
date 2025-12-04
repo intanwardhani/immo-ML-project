@@ -3,10 +3,10 @@
 # ---------------------------
 export PYTHONPATH := $(PWD)
 #                          ↑
-# (PWD) = the project root ("immo-ML-project"), so Python now sees:
-#   immo-ML-project/src/
-#   immo-ML-project/ml_components/
-#   immo-ML-project/tools/
+# (PWD) = the project root ("immo-ml-training"), so Python now sees:
+#   immo-ml-training/src/
+#   immo-ml-training/ml_components/
+#   immo-ml-training/tools/
 # and all imports work everywhere (Makefile, CLI, scripts)
 
 .PHONY: version-models train test clean

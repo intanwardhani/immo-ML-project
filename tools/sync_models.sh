@@ -3,7 +3,7 @@
 set -e
 
 TRAINING_MODELS_DIR="./models"
-DEPLOYMENT_REPO_DIR="../immo-ML-deployment/models"
+DEPLOYMENT_REPO_DIR="../immo-ml-deployment/models"
 
 echo "🔄 Syncing latest models to deployment repo..."
 
