@@ -59,6 +59,9 @@ immo-ML-project/
 │   │   └── test.csv
 │   └── README.md
 │
+├── ml_components/
+│   └── transformers.py
+│
 ├── models/
 │   ├── RandomForest_pipeline.pkl
 │   ├── Ridge_pipeline.pkl
@@ -82,15 +85,11 @@ immo-ML-project/
 │   │   ├── evaluator.py        # evaluation functions
 │   │   ├── trainer.py          # training class
 │   │   ├── tuner.py            # hyperparameter tuning (CURRENTLY UNUSED)
-│   │   └── predict.py          # predict new data with saved model (CURRENTLY UNUSED)
+│   │   └── predict.py          # predict new data with saved model
 │   │
-│   ├── pipelines/
-│   │   ├── __init__.py
-│   │   └── price_pipeline.py   # scikit-learn Pipeline object
-│   │
-│   └── utils/                  # misc utilities (CURRENTLY UNUSED)
+│   └── pipelines/
 │       ├── __init__.py
-│       └── helpers.py          
+│       └── price_pipeline.py   # scikit-learn Pipeline object         
 │
 ├── notebooks/
 │   ├── EDA.ipynb               
@@ -102,6 +101,10 @@ immo-ML-project/
 │   ├── test_preprocess_data.py
 │   └── test_model_training.py
 │
+├── tools/                      
+│   └── resave_models.py
+│
+├── Makefile
 ├── requirements.txt
 ├── pyproject.toml              # used for unit-testing
 ├── pytest.ini                  # used for unit-testing

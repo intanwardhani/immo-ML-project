@@ -1,8 +1,8 @@
 # UTF-8 Python 3.13.5
 # Author: Intan K. Wardhani
-# Last modified: 01-12-2025
+# Last modified: 03-12-2025
 
-import numpy as np
+
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import (
@@ -10,69 +10,19 @@ from sklearn.preprocessing import (
     OneHotEncoder
 )
 from sklearn.impute import SimpleImputer
-from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.linear_model import Ridge
 from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
 
+from ml_components.transformers import (
+    LogTransformer,
+    CustomOutlierCappingTransformer,
+)
 
-# ============================================================
-# 1. Custom Transformers
-# ============================================================
-
-class LogTransformer(BaseEstimator, TransformerMixin):
-    """Apply safe log1p transform to selected numeric columns."""
-
-    def __init__(self, columns=None):
-        self.columns = columns
-
-    def fit(self, X, y=None):
-        return self
-
-    def transform(self, X):
-        X = X.copy()
-        if hasattr(X, "iloc"):
-            X = X.values
-
-        for idx in self.columns:
-            X[:, idx] = np.log1p(X[:, idx])
-        return X
-
-
-class CustomOutlierCappingTransformer(BaseEstimator, TransformerMixin):
-    """Winsorise numerical columns using IQR-based capping."""
-
-    def __init__(self, columns, factor=1.5):
-        self.columns = columns
-        self.factor = factor
-        self.bounds = {}
-
-    def fit(self, X, y=None):
-        X = X.copy()
-        if hasattr(X, "iloc"):
-            X = X.values
-
-        for idx in self.columns:
-            col_data = X[:, idx]
-            q1 = np.quantile(col_data, 0.25)
-            q3 = np.quantile(col_data, 0.75)
-            iqr = q3 - q1
-            lower = q1 - self.factor * iqr
-            upper = q3 + self.factor * iqr
-            self.bounds[idx] = (lower, upper)
-        return self
-
-    def transform(self, X):
-        X = X.copy()
-        if hasattr(X, "iloc"):
-            X = X.values
-        for idx, (lower, upper) in self.bounds.items():
-            X[:, idx] = np.clip(X[:, idx], lower, upper)
-        return X
 
 
 # ============================================================
-# 2. Pipeline Builders
+# 1. Pipeline Builders
 # ============================================================
 
 def build_ridge_pipeline(
