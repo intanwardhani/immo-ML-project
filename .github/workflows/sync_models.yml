@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-sync:
-    runs-on: macos-latest   # depends on the OS one needs
+    runs-on: ubuntu-latest   # what works on GitHub-hosted runners
 
     steps:
 
