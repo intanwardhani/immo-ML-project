@@ -1,0 +1,88 @@
+name: Version & Sync Models
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-sync:
+    runs-on: macos-latest   # depends on the OS one needs
+
+    steps:
+
+    # ---------------------------------------------------------
+    # STEP 1 — Checkout TRAINING repo (the repo running the job)
+    # ---------------------------------------------------------
+    - name: Checkout training repo
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0   # required for committing back
+
+    # ---------------------------------------------------------
+    # STEP 2 — Install Python & Dependencies
+    # ---------------------------------------------------------
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.13"
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    # ---------------------------------------------------------
+    # STEP 3 — Version the models in training repo
+    # ---------------------------------------------------------
+    - name: Version models
+      run: |
+        make version-models
+
+    # ---------------------------------------------------------
+    # STEP 4 — Commit versioned models back to TRAINING repo
+    # ---------------------------------------------------------
+    - name: Commit & push versioned models to training repo
+      run: |
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+        git add models/
+        if git diff-index --quiet HEAD --; then
+          echo "No changes in training models, skipping commit."
+        else
+          git commit -m "Auto-version models [CI]"
+          git push origin main
+        fi
+
+    # ---------------------------------------------------------
+    # STEP 5 — Checkout DEPLOYMENT repo
+    # ---------------------------------------------------------
+    - name: Checkout deployment repo
+      uses: actions/checkout@v4
+      with:
+        repository: intanwardhani/immo-ml-deployment
+        path: deployment
+        token: ${{ secrets.DEPLOYMENT_REPO_PAT }}
+        fetch-depth: 0
+
+    # ---------------------------------------------------------
+    # STEP 6 — Sync *_latest.pkl into deployment/models/
+    # ---------------------------------------------------------
+    - name: Sync latest models into deployment repo
+      run: |
+        cp models/*_latest.pkl deployment/models/
+
+    # ---------------------------------------------------------
+    # STEP 7 — Commit & push to DEPLOYMENT repo
+    # ---------------------------------------------------------
+    - name: Commit & push to deployment repo
+      run: |
+        cd deployment
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+        git add models/
+        if git diff-index --quiet HEAD --; then
+          echo "No new models for deployment repo, skipping commit."
+        else
+          git commit -m "Auto-sync latest models [CI]"
+          git push origin main
+        fi
